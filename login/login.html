@@ -1,148 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ingresar - Formosa Empleos</title>
-  <link rel="stylesheet" href="../css/styles.css">
-  <style>
-    .login-wrap {
-      min-height: calc(100vh - 73px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-    }
-    .login-tarjeta {
-      width: 100%;
-      max-width: 420px;
-    }
-    .login-tabs {
-      display: flex;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--gris-claro);
-    }
-    .login-tab {
-      flex: 1;
-      background: none;
-      border: none;
-      padding: 0.8rem;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--gris);
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-    }
-    .login-tab.activo {
-      color: var(--terracota);
-      border-bottom-color: var(--terracota);
-    }
-    .tipo-usuario-selector {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.3rem;
-    }
-    .tipo-usuario-opcion {
-      flex: 1;
-      text-align: center;
-      padding: 0.8rem;
-      border: 1px solid var(--gris-claro);
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-    .tipo-usuario-opcion.seleccionado {
-      border-color: var(--terracota);
-      background: #FBEBD8;
-      color: var(--terracota-oscuro);
-    }
-    .oculto {
-      display: none !important;
-    }
-    .btn-full {
-      width: 100%;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ingresar - Formosa Empleos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .login-wrap {
+        min-height: calc(100vh - 73px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+      }
+      .login-tarjeta {
+        width: 100%;
+        max-width: 420px;
+      }
+      .login-tabs {
+        display: flex;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--gris-claro);
+      }
+      .login-tab {
+        flex: 1;
+        background: none;
+        border: none;
+        padding: 0.8rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--gris);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+      }
+      .login-tab.activo {
+        color: var(--terracota);
+        border-bottom-color: var(--terracota);
+      }
+      .tipo-usuario-selector {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1.3rem;
+      }
+      .tipo-usuario-opcion {
+        flex: 1;
+        text-align: center;
+        padding: 0.8rem;
+        border: 1px solid var(--gris-claro);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      .tipo-usuario-opcion.seleccionado {
+        border-color: var(--terracota);
+        background: #fbebd8;
+        color: var(--terracota-oscuro);
+      }
+      .oculto {
+        display: none !important;
+      }
+      .btn-full {
+        width: 100%;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sitio-header">
+      <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
+    </header>
 
-  <header class="sitio-header">
-    <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
-  </header>
+    <div class="login-wrap">
+      <div class="tarjeta login-tarjeta">
+        <div class="login-tabs">
+          <button
+            class="login-tab activo"
+            id="tab-ingresar"
+            onclick="cambiarTab('ingresar')"
+          >
+            Iniciar sesión
+          </button>
+          <button
+            class="login-tab"
+            id="tab-registrar"
+            onclick="cambiarTab('registrar')"
+          >
+            Registrarme
+          </button>
+        </div>
 
-  <div class="login-wrap">
-    <div class="tarjeta login-tarjeta">
+        <!-- FORM: INGRESAR -->
+        <form id="form-ingresar">
+          <div class="campo">
+            <label for="ingresar-email">Email</label>
+            <input
+              type="email"
+              id="ingresar-email"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <div class="campo">
+            <label for="ingresar-password">Contraseña</label>
+            <input
+              type="password"
+              id="ingresar-password"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+          <button type="submit" class="btn btn-primario btn-full">
+            Iniciar sesión
+          </button>
+          <p class="mensaje-error oculto" id="error-ingresar"></p>
+        </form>
 
-      <div class="login-tabs">
-        <button class="login-tab activo" id="tab-ingresar" onclick="cambiarTab('ingresar')">Iniciar sesión</button>
-        <button class="login-tab" id="tab-registrar" onclick="cambiarTab('registrar')">Registrarme</button>
+        <!-- FORM: REGISTRAR -->
+        <form id="form-registrar" class="oculto">
+          <div class="tipo-usuario-selector">
+            <div
+              class="tipo-usuario-opcion seleccionado"
+              data-tipo="postulante"
+              onclick="seleccionarTipo('postulante')"
+            >
+              Busco trabajo
+            </div>
+            <div
+              class="tipo-usuario-opcion"
+              data-tipo="empresa"
+              onclick="seleccionarTipo('empresa')"
+            >
+              Quiero publicar empleos
+            </div>
+          </div>
+
+          <div class="campo">
+            <label id="label-nombre" for="registrar-nombre"
+              >Nombre completo</label
+            >
+            <input type="text" id="registrar-nombre" required />
+          </div>
+
+          <!-- Campos extra, solo visibles si tipo = empresa -->
+          <div id="campos-empresa" class="oculto">
+            <div class="campo">
+              <label for="registrar-cuit">CUIT</label>
+              <input
+                type="text"
+                id="registrar-cuit"
+                placeholder="20-12345678-9"
+              />
+            </div>
+            <div class="campo">
+              <label for="registrar-rubro">Rubro</label>
+              <input
+                type="text"
+                id="registrar-rubro"
+                placeholder="Ej: Gastronomía, Comercio, Construcción"
+              />
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="registrar-email">Email</label>
+            <input
+              type="email"
+              id="registrar-email"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <div class="campo">
+            <label for="registrar-password">Contraseña</label>
+            <input
+              type="password"
+              id="registrar-password"
+              required
+              minlength="6"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primario btn-full">
+            Crear cuenta
+          </button>
+          <p class="mensaje-error oculto" id="error-registrar"></p>
+          <p class="mensaje-exito oculto" id="exito-registrar"></p>
+        </form>
       </div>
-
-      <!-- FORM: INGRESAR -->
-      <form id="form-ingresar">
-        <div class="campo">
-          <label for="ingresar-email">Email</label>
-          <input type="email" id="ingresar-email" required autocomplete="email">
-        </div>
-        <div class="campo">
-          <label for="ingresar-password">Contraseña</label>
-          <input type="password" id="ingresar-password" required autocomplete="current-password">
-        </div>
-        <button type="submit" class="btn btn-primario btn-full">Iniciar sesión</button>
-        <p class="mensaje-error oculto" id="error-ingresar"></p>
-      </form>
-
-      <!-- FORM: REGISTRAR -->
-      <form id="form-registrar" class="oculto">
-
-        <div class="tipo-usuario-selector">
-          <div class="tipo-usuario-opcion seleccionado" data-tipo="postulante" onclick="seleccionarTipo('postulante')">
-            Busco trabajo
-          </div>
-          <div class="tipo-usuario-opcion" data-tipo="empresa" onclick="seleccionarTipo('empresa')">
-            Quiero publicar empleos
-          </div>
-        </div>
-
-        <div class="campo">
-          <label id="label-nombre" for="registrar-nombre">Nombre completo</label>
-          <input type="text" id="registrar-nombre" required>
-        </div>
-
-        <!-- Campos extra, solo visibles si tipo = empresa -->
-        <div id="campos-empresa" class="oculto">
-          <div class="campo">
-            <label for="registrar-cuit">CUIT</label>
-            <input type="text" id="registrar-cuit" placeholder="20-12345678-9">
-          </div>
-          <div class="campo">
-            <label for="registrar-rubro">Rubro</label>
-            <input type="text" id="registrar-rubro" placeholder="Ej: Gastronomía, Comercio, Construcción">
-          </div>
-        </div>
-
-        <div class="campo">
-          <label for="registrar-email">Email</label>
-          <input type="email" id="registrar-email" required autocomplete="email">
-        </div>
-        <div class="campo">
-          <label for="registrar-password">Contraseña</label>
-          <input type="password" id="registrar-password" required minlength="6" autocomplete="new-password">
-        </div>
-
-        <button type="submit" class="btn btn-primario btn-full">Crear cuenta</button>
-        <p class="mensaje-error oculto" id="error-registrar"></p>
-        <p class="mensaje-exito oculto" id="exito-registrar"></p>
-      </form>
-
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../js/supabase-client.js"></script>
-  <script src="../js/api.js"></script>
-  <script src="login.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="login.js"></script>
+  </body>
 </html>

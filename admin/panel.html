@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Admin - Formosa Empleos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0 1.5rem 0;
+      }
+      .empresa-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid var(--gris-claro);
+      }
+      .empresa-item:last-child {
+        border-bottom: none;
+      }
+      .empresa-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.2rem;
+      }
+      .empresa-info p {
+        margin: 0.15rem 0;
+        font-size: 0.9rem;
+        color: var(--gris);
+      }
+      .empresa-acciones {
+        display: flex;
+        gap: 0.6rem;
+        flex-shrink: 0;
+      }
+      .btn-aprobar {
+        background: var(--verde-monte);
+        color: white;
+      }
+      .btn-aprobar:hover {
+        background: #2e5340;
+      }
+      .btn-rechazar {
+        background: transparent;
+        color: var(--rojo-error);
+        border: 1px solid var(--rojo-error);
+      }
+      .btn-rechazar:hover {
+        background: #f5e3e1;
+      }
+      .btn-chico {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+      .sin-pendientes {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--gris);
+      }
+      .cargando {
+        text-align: center;
+        padding: 2rem;
+        color: var(--gris);
+      }
+      .no-autorizado {
+        text-align: center;
+        padding: 4rem 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sitio-header">
+      <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
+      <nav>
+        <button
+          class="btn btn-secundario"
+          id="btn-logout"
+          onclick="cerrarSesion()"
+        >
+          Cerrar sesión
+        </button>
+      </nav>
+    </header>
+
+    <div class="contenedor">
+      <div id="vista-cargando" class="cargando">Verificando acceso...</div>
+
+      <div id="vista-no-autorizado" class="no-autorizado oculto">
+        <h2>No tenés acceso a esta página</h2>
+        <p>Esta sección es solo para administradores.</p>
+        <a href="../index.html" class="btn btn-primario">Volver al inicio</a>
+      </div>
+
+      <div id="vista-panel" class="oculto">
+        <div class="panel-header">
+          <h1>Empresas pendientes de aprobación</h1>
+        </div>
+
+        <div id="lista-empresas" class="tarjeta">
+          <!-- Se llena dinámicamente desde panel.js -->
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="panel.js"></script>
+  </body>
+</html>
