@@ -229,3 +229,9 @@ button {
     padding: 0 1rem;
   }
 }
+
+/* ---------- Utilidad global de visibilidad ---------- */
+/* Usada por JS para mostrar/ocultar secciones (loading, error, vistas según rol, etc.) */
+.oculto {
+  display: none !important;
+}

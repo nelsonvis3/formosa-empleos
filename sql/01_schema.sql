@@ -96,6 +96,16 @@ create policy "perfil_empresa_select_propio"
   on public.perfiles_empresa for select
   using (auth.uid() = usuario_id);
 
+-- Un admin puede ver TODAS las empresas, sin importar el estado
+-- (necesario para el panel de aprobación: sin esto, getEmpresasPendientes()
+-- corre sin error pero la RLS filtra en silencio las filas ajenas, y el
+-- admin nunca ve las empresas pendientes de otros usuarios)
+create policy "perfil_empresa_select_admin"
+  on public.perfiles_empresa for select
+  using (
+    exists (select 1 from public.usuarios u where u.id = auth.uid() and u.tipo = 'admin')
+  );
+
 create policy "perfil_empresa_insert_propio"
   on public.perfiles_empresa for insert
   with check (auth.uid() = usuario_id);
