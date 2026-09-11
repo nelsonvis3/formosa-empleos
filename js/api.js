@@ -267,7 +267,7 @@ const Api = {
   async getPostulacionesDeEmpleo(empleoId) {
     const { data, error } = await supabaseClient
       .from("postulaciones")
-      .select("*, perfiles_postulante(*)")
+      .select("*, perfiles_postulante(*, usuarios(nombre_completo, email))")
       .eq("empleo_id", empleoId)
       .order("created_at", { ascending: false });
     if (error) throw error;

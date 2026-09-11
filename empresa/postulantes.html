@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Postulantes - Formosa Empleos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .postulantes-header {
+        margin: 2rem 0 1.5rem 0;
+      }
+      .postulantes-header .volver-link {
+        display: inline-block;
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+      }
+      .postulante-card {
+        background: var(--blanco);
+        border: 1px solid var(--gris-claro);
+        border-radius: 10px;
+        padding: 1.4rem;
+        margin-bottom: 1rem;
+      }
+      .postulante-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.8rem;
+      }
+      .postulante-datos p {
+        margin: 0.2rem 0;
+        font-size: 0.9rem;
+        color: var(--gris);
+      }
+      .postulante-datos h3 {
+        margin: 0 0 0.3rem 0;
+        font-size: 1.05rem;
+      }
+      .habilidades-mini {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: 0.5rem;
+      }
+      .habilidades-mini span {
+        font-size: 0.78rem;
+        background: var(--crema);
+        border: 1px solid var(--gris-claro);
+        padding: 0.15rem 0.55rem;
+        border-radius: 100px;
+        color: var(--gris);
+      }
+      .respuestas-formulario {
+        margin-top: 0.9rem;
+        padding-top: 0.9rem;
+        border-top: 1px solid var(--gris-claro);
+      }
+      .respuesta-item {
+        margin-bottom: 0.6rem;
+      }
+      .respuesta-item .pregunta {
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 0.15rem;
+      }
+      .respuesta-item .respuesta {
+        font-size: 0.9rem;
+        color: var(--texto);
+      }
+      .postulante-acciones {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .postulante-acciones select {
+        width: auto;
+        padding: 0.45rem 0.7rem;
+      }
+      .btn-cv {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: 1px solid var(--gris-claro);
+        background: var(--blanco);
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-block;
+      }
+      .btn-cv:hover {
+        background: var(--gris-claro);
+        text-decoration: none;
+      }
+      .sin-postulantes {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--gris);
+      }
+      .cargando {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gris);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sitio-header">
+      <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
+      <nav>
+        <button class="btn btn-secundario" onclick="cerrarSesion()">
+          Cerrar sesión
+        </button>
+      </nav>
+    </header>
+
+    <div class="contenedor-ancho">
+      <div id="vista-cargando" class="cargando">Cargando postulantes...</div>
+
+      <div id="vista-postulantes" class="oculto">
+        <div class="postulantes-header">
+          <a href="dashboard.html" class="volver-link"
+            >← Volver a mis empleos</a
+          >
+          <h1 id="titulo-empleo"></h1>
+        </div>
+
+        <div id="lista-postulantes"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="postulantes.js"></script>
+  </body>
+</html>

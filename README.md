@@ -98,10 +98,10 @@ Ver `sql/02_notas_admin.sql` para más comandos operativos.
 - [x] Esquema SQL + RLS policies
 - [x] Setup del proyecto + estructura de carpetas
 - [x] Login y registro dual (postulante/empresa)
-- [ ] Panel admin (aprobar/rechazar empresas)
-- [ ] Publicar empleo (lado empresa)
-- [ ] Listado + detalle de empleo (público)
-- [ ] Postulación (un click / formulario)
-- [ ] Dashboard empresa (ver postulantes)
-- [ ] Dashboard postulante (mis postulaciones, editar perfil, subir CV)
+- [x] Panel admin (aprobar/rechazar empresas)
+- [x] Publicar empleo (lado empresa)
+- [x] Listado + detalle de empleo (público)
+- [x] Postulación (un click / formulario)
+- [x] Dashboard empresa (ver postulantes)
+- [x] Dashboard postulante (mis postulaciones, editar perfil, subir CV)
 - [ ] Migración de Supabase a backend propio (FastAPI + Postgres)
