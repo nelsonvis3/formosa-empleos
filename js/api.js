@@ -13,7 +13,6 @@
 // ============================================================
 
 const Api = {
-
   // ---------- AUTH ----------
 
   async registrarse({ email, password, tipo, nombreCompleto }) {
@@ -22,7 +21,7 @@ const Api = {
       password,
       options: {
         data: {
-          tipo,               // 'postulante' | 'empresa'
+          tipo, // 'postulante' | 'empresa'
           nombre_completo: nombreCompleto,
         },
       },
@@ -32,7 +31,10 @@ const Api = {
   },
 
   async login({ email, password }) {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) throw error;
     return data;
   },
@@ -43,7 +45,9 @@ const Api = {
   },
 
   async getUsuarioActual() {
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser();
     if (!user) return null;
 
     const { data, error } = await supabaseClient
@@ -58,10 +62,22 @@ const Api = {
 
   // ---------- PERFIL EMPRESA ----------
 
-  async crearPerfilEmpresa({ usuarioId, nombreEmpresa, cuit, descripcion, rubro }) {
+  async crearPerfilEmpresa({
+    usuarioId,
+    nombreEmpresa,
+    cuit,
+    descripcion,
+    rubro,
+  }) {
     const { data, error } = await supabaseClient
       .from("perfiles_empresa")
-      .insert({ usuario_id: usuarioId, nombre_empresa: nombreEmpresa, cuit, descripcion, rubro })
+      .insert({
+        usuario_id: usuarioId,
+        nombre_empresa: nombreEmpresa,
+        cuit,
+        descripcion,
+        rubro,
+      })
       .select()
       .single();
     if (error) throw error;
@@ -91,10 +107,22 @@ const Api = {
 
   // ---------- PERFIL POSTULANTE ----------
 
-  async crearPerfilPostulante({ usuarioId, telefono, ubicacion, experiencia, habilidades }) {
+  async crearPerfilPostulante({
+    usuarioId,
+    telefono,
+    ubicacion,
+    experiencia,
+    habilidades,
+  }) {
     const { data, error } = await supabaseClient
       .from("perfiles_postulante")
-      .insert({ usuario_id: usuarioId, telefono, ubicacion, experiencia, habilidades })
+      .insert({
+        usuario_id: usuarioId,
+        telefono,
+        ubicacion,
+        experiencia,
+        habilidades,
+      })
       .select()
       .single();
     if (error) throw error;
@@ -153,7 +181,9 @@ const Api = {
   async getEmpleoPorId(empleoId) {
     const { data, error } = await supabaseClient
       .from("empleos")
-      .select("*, perfiles_empresa(nombre_empresa, logo_url, descripcion, rubro)")
+      .select(
+        "*, perfiles_empresa(nombre_empresa, logo_url, descripcion, rubro)",
+      )
       .eq("id", empleoId)
       .single();
     if (error) throw error;
@@ -193,7 +223,12 @@ const Api = {
 
   // ---------- POSTULACIONES ----------
 
-  async postularse({ empleoId, postulanteId, respuestasFormulario = null, cvUsadoUrl = null }) {
+  async postularse({
+    empleoId,
+    postulanteId,
+    respuestasFormulario = null,
+    cvUsadoUrl = null,
+  }) {
     const { data, error } = await supabaseClient
       .from("postulaciones")
       .insert({
@@ -206,6 +241,17 @@ const Api = {
       .single();
     if (error) throw error;
     return data;
+  },
+
+  async yaSePostulo(empleoId, postulanteId) {
+    const { data, error } = await supabaseClient
+      .from("postulaciones")
+      .select("id")
+      .eq("empleo_id", empleoId)
+      .eq("postulante_id", postulanteId)
+      .maybeSingle();
+    if (error) throw error;
+    return !!data;
   },
 
   async getMisPostulaciones(postulanteId) {
