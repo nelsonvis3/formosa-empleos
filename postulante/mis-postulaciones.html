@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mis postulaciones - Formosa Empleos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .postulaciones-header {
+        margin: 2rem 0 1.5rem 0;
+      }
+      .postulacion-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid var(--gris-claro);
+      }
+      .postulacion-item:last-child {
+        border-bottom: none;
+      }
+      .postulacion-info h3 {
+        font-size: 1.05rem;
+        margin-bottom: 0.2rem;
+      }
+      .postulacion-info p {
+        margin: 0.15rem 0;
+        font-size: 0.85rem;
+        color: var(--gris);
+      }
+      .etiqueta-vista {
+        background: #e4eef5;
+        color: #2b5d80;
+      }
+      .etiqueta-contactado {
+        background: #e1ede5;
+        color: var(--verde-monte);
+      }
+      .sin-postulaciones {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--gris);
+      }
+      .cargando {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gris);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sitio-header">
+      <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
+      <nav>
+        <a href="perfil.html">Mi perfil</a>
+        <button class="btn btn-secundario" onclick="cerrarSesion()">
+          Cerrar sesión
+        </button>
+      </nav>
+    </header>
+
+    <div class="contenedor">
+      <div id="vista-cargando" class="cargando">
+        Cargando tus postulaciones...
+      </div>
+
+      <div id="vista-postulaciones" class="oculto">
+        <div class="postulaciones-header">
+          <h1>Mis postulaciones</h1>
+        </div>
+
+        <div class="tarjeta">
+          <div id="lista-postulaciones"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="mis-postulaciones.js"></script>
+  </body>
+</html>

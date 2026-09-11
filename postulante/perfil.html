@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi perfil - Formosa Empleos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .perfil-header {
+        margin: 2rem 0 1.5rem 0;
+      }
+      .cv-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--gris-claro);
+        border-radius: 8px;
+        margin-bottom: 1.3rem;
+        flex-wrap: wrap;
+      }
+      .cv-box.sin-cv {
+        background: #fbebd8;
+      }
+      .cv-box p {
+        margin: 0;
+        font-size: 0.9rem;
+      }
+      .cv-box input[type="file"] {
+        font-size: 0.85rem;
+      }
+      .habilidades-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.5rem;
+      }
+      .habilidad-tag {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--crema);
+        border: 1px solid var(--gris-claro);
+        border-radius: 100px;
+        padding: 0.25rem 0.5rem 0.25rem 0.8rem;
+        font-size: 0.85rem;
+      }
+      .habilidad-tag button {
+        background: none;
+        border: none;
+        color: var(--gris);
+        padding: 0;
+        line-height: 1;
+      }
+      .input-habilidad-wrap {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .input-habilidad-wrap input {
+        flex: 1;
+      }
+      .cargando {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gris);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sitio-header">
+      <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
+      <nav>
+        <a href="mis-postulaciones.html">Mis postulaciones</a>
+        <button class="btn btn-secundario" onclick="cerrarSesion()">
+          Cerrar sesión
+        </button>
+      </nav>
+    </header>
+
+    <div class="contenedor">
+      <div id="vista-cargando" class="cargando">Cargando tu perfil...</div>
+
+      <div id="vista-perfil" class="oculto">
+        <div class="perfil-header">
+          <h1>Mi perfil</h1>
+          <p style="color: var(--gris)">
+            Esta información se comparte con las empresas cuando te postulás.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <div id="cv-box" class="cv-box">
+            <!-- Se llena dinámicamente -->
+          </div>
+
+          <form id="form-perfil">
+            <div
+              class="fila-doble"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem"
+            >
+              <div class="campo">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" placeholder="Ej: 3704123456" />
+              </div>
+              <div class="campo">
+                <label for="ubicacion">Ubicación</label>
+                <input
+                  type="text"
+                  id="ubicacion"
+                  placeholder="Formosa Capital"
+                />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="experiencia">Experiencia</label>
+              <textarea
+                id="experiencia"
+                placeholder="Contá brevemente tu experiencia laboral..."
+              ></textarea>
+            </div>
+
+            <div class="campo">
+              <label for="disponibilidad">Disponibilidad</label>
+              <input
+                type="text"
+                id="disponibilidad"
+                placeholder="Ej: Full time, Part time, Fines de semana"
+              />
+            </div>
+
+            <div class="campo">
+              <label>Habilidades</label>
+              <div class="input-habilidad-wrap">
+                <input
+                  type="text"
+                  id="input-nueva-habilidad"
+                  placeholder="Ej: Atención al cliente"
+                />
+                <button
+                  type="button"
+                  class="btn btn-secundario"
+                  onclick="agregarHabilidad()"
+                >
+                  Agregar
+                </button>
+              </div>
+              <div id="lista-habilidades" class="habilidades-tags"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primario">
+              Guardar perfil
+            </button>
+            <p class="mensaje-exito oculto" id="exito-perfil">
+              Perfil actualizado.
+            </p>
+            <p class="mensaje-error oculto" id="error-perfil"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="perfil.js"></script>
+  </body>
+</html>
