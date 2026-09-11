@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de empresa - Formosa Empleos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .dash-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0 1rem 0;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .estado-banner {
+        padding: 1rem 1.25rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+      }
+      .estado-banner.pendiente {
+        background: #fbebd8;
+        color: #9a5e14;
+      }
+      .estado-banner.rechazada {
+        background: #f5e3e1;
+        color: var(--rojo-error);
+      }
+      .empleo-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid var(--gris-claro);
+      }
+      .empleo-item:last-child {
+        border-bottom: none;
+      }
+      .empleo-info h3 {
+        font-size: 1.05rem;
+        margin-bottom: 0.3rem;
+      }
+      .empleo-info p {
+        margin: 0.15rem 0;
+        font-size: 0.85rem;
+        color: var(--gris);
+      }
+      .empleo-meta {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-top: 0.4rem;
+      }
+      .empleo-acciones {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+        align-items: flex-start;
+      }
+      .btn-chico {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: 1px solid var(--gris-claro);
+        background: var(--blanco);
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+      .btn-chico:hover {
+        background: var(--gris-claro);
+      }
+      .sin-empleos {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--gris);
+      }
+      .cargando {
+        text-align: center;
+        padding: 2rem;
+        color: var(--gris);
+      }
+      select.filtro-estado {
+        width: auto;
+        padding: 0.45rem 0.7rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sitio-header">
+      <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
+      <nav>
+        <button class="btn btn-secundario" onclick="cerrarSesion()">
+          Cerrar sesión
+        </button>
+      </nav>
+    </header>
+
+    <div class="contenedor-ancho">
+      <div id="vista-cargando" class="cargando">Cargando tu panel...</div>
+
+      <div id="vista-dashboard" class="oculto">
+        <div id="banner-estado"></div>
+
+        <div class="dash-header">
+          <h1 id="titulo-empresa">Mis empleos</h1>
+          <button
+            class="btn btn-primario"
+            id="btn-publicar"
+            onclick="irAPublicar()"
+          >
+            + Publicar empleo
+          </button>
+        </div>
+
+        <div class="tarjeta">
+          <div id="lista-empleos">
+            <!-- Se llena dinámicamente -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>
