@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formosa Empleos - Bolsa de trabajo de Formosa Capital</title>
+    <meta
+      name="description"
+      content="Encontrá empleo en Formosa Capital o publicá una búsqueda laboral para tu empresa."
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      .hero {
+        padding: 3.5rem 1.5rem 2.5rem;
+        text-align: center;
+        border-bottom: 1px solid var(--gris-claro);
+      }
+      .hero h1 {
+        font-size: 2.4rem;
+        max-width: 640px;
+        margin: 0 auto 0.6rem;
+      }
+      .hero p {
+        color: var(--gris);
+        font-size: 1.05rem;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      .hero-acciones {
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 0.8rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .filtros {
+        display: flex;
+        gap: 0.8rem;
+        padding: 1.5rem;
+        max-width: 1080px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+      }
+      .filtros select {
+        width: auto;
+        min-width: 160px;
+      }
+
+      .grid-empleos {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 1.5rem 3rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.1rem;
+      }
+
+      .empleo-card {
+        background: var(--blanco);
+        border: 1px solid var(--gris-claro);
+        border-radius: 10px;
+        padding: 1.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition: border-color 0.15s ease;
+      }
+      .empleo-card:hover {
+        border-color: var(--terracota);
+      }
+      .empleo-card h3 {
+        font-size: 1.1rem;
+        margin: 0;
+      }
+      .empleo-card .empresa-nombre {
+        color: var(--terracota);
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      .empleo-card .empleo-desc {
+        color: var(--gris);
+        font-size: 0.9rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      .empleo-card .empleo-tags {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-top: 0.3rem;
+      }
+      .empleo-card .tag {
+        font-size: 0.78rem;
+        color: var(--gris);
+        background: var(--crema);
+        border: 1px solid var(--gris-claro);
+        padding: 0.2rem 0.6rem;
+        border-radius: 100px;
+      }
+      .empleo-card .empleo-salario {
+        font-size: 0.85rem;
+        color: var(--verde-monte);
+        font-weight: 500;
+        margin-top: 0.2rem;
+      }
+      .empleo-card a.btn {
+        margin-top: 0.6rem;
+        text-align: center;
+      }
+
+      .estado-vacio {
+        text-align: center;
+        padding: 4rem 1.5rem;
+        color: var(--gris);
+      }
+      .cargando-empleos {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--gris);
+        grid-column: 1 / -1;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sitio-header">
+      <a href="index.html" class="logo">Formosa<span>Empleos</span></a>
+      <nav id="nav-links">
+        <!-- Se completa dinámicamente según haya sesión activa o no -->
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Empleos en Formosa Capital, todos en un solo lugar</h1>
+      <p>
+        Buscá tu próximo trabajo o publicá una vacante para tu empresa, gratis.
+      </p>
+      <div class="hero-acciones">
+        <a href="#empleos" class="btn btn-primario">Ver empleos</a>
+        <a
+          href="login/login.html"
+          class="btn btn-secundario"
+          id="btn-publicar-hero"
+          >Publicar un empleo</a
+        >
+      </div>
+    </section>
+
+    <div class="filtros" id="empleos">
+      <select id="filtro-rubro">
+        <option value="">Todos los rubros</option>
+      </select>
+      <select id="filtro-modalidad">
+        <option value="">Todas las modalidades</option>
+        <option value="presencial">Presencial</option>
+        <option value="remoto">Remoto</option>
+        <option value="hibrido">Híbrido</option>
+      </select>
+    </div>
+
+    <div class="grid-empleos" id="grid-empleos">
+      <p class="cargando-empleos">Cargando empleos...</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
