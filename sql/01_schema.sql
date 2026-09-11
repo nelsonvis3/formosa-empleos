@@ -63,18 +63,10 @@ create policy "perfil_postulante_update_propio"
   on public.perfiles_postulante for update
   using (auth.uid() = usuario_id);
 
--- Las empresas pueden ver el perfil de quienes se postularon a sus empleos
-create policy "perfil_postulante_select_empresa"
-  on public.perfiles_postulante for select
-  using (
-    exists (
-      select 1
-      from public.postulaciones p
-      join public.empleos e on e.id = p.empleo_id
-      where p.postulante_id = perfiles_postulante.usuario_id
-        and e.empresa_id = auth.uid()
-    )
-  );
+-- Nota: falta una policy más para esta tabla ("perfil_postulante_select_empresa"),
+-- que le permite a una empresa ver el perfil de quien se postuló a su empleo.
+-- Esa policy depende de las tablas `empleos` y `postulaciones`, que todavía no
+-- existen en este punto del archivo — se crea al final, en la sección 6.
 
 
 -- ------------------------------------------------------------
@@ -220,6 +212,25 @@ create policy "postulaciones_update_empresa"
     exists (
       select 1 from public.empleos e
       where e.id = postulaciones.empleo_id and e.empresa_id = auth.uid()
+    )
+  );
+
+
+-- ------------------------------------------------------------
+-- 6. Policy pendiente de perfiles_postulante
+-- (depende de empleos y postulaciones, que recién ahora existen)
+-- ------------------------------------------------------------
+
+-- Las empresas pueden ver el perfil de quienes se postularon a sus empleos
+create policy "perfil_postulante_select_empresa"
+  on public.perfiles_postulante for select
+  using (
+    exists (
+      select 1
+      from public.postulaciones p
+      join public.empleos e on e.id = p.empleo_id
+      where p.postulante_id = perfiles_postulante.usuario_id
+        and e.empresa_id = auth.uid()
     )
   );
 
