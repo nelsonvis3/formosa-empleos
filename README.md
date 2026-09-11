@@ -1,3 +1,5 @@
+# No Olvidarme
+
 # Formosa Empleos
 
 Portal de empleos para Formosa Capital. Conecta postulantes con empresas locales:
@@ -14,15 +16,15 @@ de usuario y empresa.
 
 Este proyecto arrancó con Supabase para priorizar velocidad de desarrollo.
 **El plan es migrar a un backend propio (probablemente FastAPI + Postgres
-propio) en el corto/mediano plazo.**
+propio) en el mediano/largo plazo.**
 
 Para que esa migración sea manejable, todo el código de páginas llama
-exclusivamente a las funciones de `js/api.js` (nunca a `supabaseClient`
-directamente). El día de la migración, el trabajo se concentra en reescribir
+exclusivamente a las funciones de `js/api.js`. El día de la migración, el trabajo se concentra en reescribir
 el contenido de `js/api.js` para que pegue a la nueva API en vez de a
 Supabase — la UI no debería necesitar cambios.
 
 Lo que NO migra automáticamente y hay que planear aparte:
+
 - **Auth:** Supabase Auth maneja hoy el login/registro/sesión. Un backend
   propio necesita su propia estrategia (JWT, sesiones, etc.) y migrar los
   usuarios existentes.
@@ -75,13 +77,10 @@ Ver `sql/01_schema.sql` para el detalle completo con comentarios. Resumen:
 
 ## Setup local
 
-1. Cloná el repo
-2. Creá un proyecto en [supabase.com](https://supabase.com)
-3. Corré `sql/01_schema.sql` en el SQL Editor del proyecto
-4. Creá un bucket de Storage público llamado `archivos` (para CVs y logos)
-5. Completá `js/supabase-client.js` con tu `Project URL` y `anon public key`
-   (Project Settings → API en el dashboard de Supabase)
-6. Abrí `index.html` con Live Server (o similar) — no hay build step
+1. Clonar el repo
+2. Crear un proyecto en [supabase.com](https://supabase.com)
+3. Correr `sql/01_schema.sql` en el SQL Editor del proyecto
+4. Crear un bucket de Storage público llamado `archivos` (para CVs y logos)
 
 ### Convertirte en admin (para aprobar empresas)
 
