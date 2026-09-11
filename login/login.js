@@ -91,6 +91,7 @@ document
     try {
       await Api.login({ email, password });
       const usuario = await Api.getUsuarioActual();
+      await Api.asegurarPerfilCreado(usuario);
       redirigirSegunTipo(usuario.tipo);
     } catch (error) {
       mostrarError("error-ingresar", error);
@@ -117,35 +118,31 @@ document
     boton.textContent = "Creando cuenta...";
 
     try {
-      const { user } = await Api.registrarse({
+      const cuit =
+        tipoSeleccionado === "empresa"
+          ? document.getElementById("registrar-cuit").value.trim()
+          : null;
+      const rubro =
+        tipoSeleccionado === "empresa"
+          ? document.getElementById("registrar-rubro").value.trim()
+          : null;
+
+      await Api.registrarse({
         email,
         password,
         tipo: tipoSeleccionado,
         nombreCompleto: nombre,
+        cuit,
+        rubro,
       });
 
-      // El trigger de Postgres ya creó la fila en `usuarios`.
-      // Ahora creamos el perfil específico según el tipo elegido.
-      if (tipoSeleccionado === "empresa") {
-        const cuit = document.getElementById("registrar-cuit").value.trim();
-        const rubro = document.getElementById("registrar-rubro").value.trim();
-        await Api.crearPerfilEmpresa({
-          usuarioId: user.id,
-          nombreEmpresa: nombre,
-          cuit,
-          rubro,
-        });
-      } else {
-        await Api.crearPerfilPostulante({ usuarioId: user.id });
-      }
+      // El perfil específico (empresa/postulante) se termina de crear en el
+      // primer login exitoso (ver Api.asegurarPerfilCreado), porque acá
+      // todavía puede no haber sesión activa si el proyecto tiene
+      // confirmación de email habilitada.
 
-      if (tipoSeleccionado === "empresa") {
-        document.getElementById("exito-registrar").textContent =
-          "¡Cuenta creada! Tu empresa queda pendiente de aprobación — te avisamos por email cuando esté activa.";
-      } else {
-        document.getElementById("exito-registrar").textContent =
-          "¡Cuenta creada! Ya podés iniciar sesión.";
-      }
+      document.getElementById("exito-registrar").textContent =
+        "¡Cuenta creada! Revisá tu email para confirmar la cuenta, y después iniciá sesión.";
       document.getElementById("exito-registrar").classList.remove("oculto");
       e.target.reset();
       boton.textContent = "Crear cuenta";

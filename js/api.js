@@ -15,7 +15,14 @@
 const Api = {
   // ---------- AUTH ----------
 
-  async registrarse({ email, password, tipo, nombreCompleto }) {
+  async registrarse({
+    email,
+    password,
+    tipo,
+    nombreCompleto,
+    cuit = null,
+    rubro = null,
+  }) {
     const { data, error } = await supabaseClient.auth.signUp({
       email,
       password,
@@ -23,6 +30,8 @@ const Api = {
         data: {
           tipo, // 'postulante' | 'empresa'
           nombre_completo: nombreCompleto,
+          cuit, // solo se usa si tipo='empresa'
+          rubro, // solo se usa si tipo='empresa'
         },
       },
     });
@@ -58,6 +67,47 @@ const Api = {
 
     if (error) throw error;
     return data;
+  },
+
+  // Se llama después de un login exitoso. Si el registro se hizo con
+  // confirmación de email pendiente, el perfil específico (empresa o
+  // postulante) puede no haberse creado en su momento porque no había
+  // sesión activa todavía para pasar la RLS. Esta función lo crea recién
+  // acá si hace falta, usando los datos guardados en la metadata de Auth
+  // durante el signUp().
+  async asegurarPerfilCreado(usuario) {
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser();
+    const metadata = user?.user_metadata || {};
+
+    if (usuario.tipo === "empresa") {
+      const { data: existente } = await supabaseClient
+        .from("perfiles_empresa")
+        .select("usuario_id")
+        .eq("usuario_id", usuario.id)
+        .maybeSingle();
+
+      if (!existente) {
+        await this.crearPerfilEmpresa({
+          usuarioId: usuario.id,
+          nombreEmpresa:
+            metadata.nombre_completo || usuario.nombre_completo || "Empresa",
+          cuit: metadata.cuit || null,
+          rubro: metadata.rubro || null,
+        });
+      }
+    } else if (usuario.tipo === "postulante") {
+      const { data: existente } = await supabaseClient
+        .from("perfiles_postulante")
+        .select("usuario_id")
+        .eq("usuario_id", usuario.id)
+        .maybeSingle();
+
+      if (!existente) {
+        await this.crearPerfilPostulante({ usuarioId: usuario.id });
+      }
+    }
   },
 
   // ---------- PERFIL EMPRESA ----------
