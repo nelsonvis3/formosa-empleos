@@ -13,4 +13,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_knMT2VICf28e1V2QSQDdgQ_eTZ6OKMc";
 
 // Se importa el SDK desde CDN en el <script> de cada HTML (ver login.html)
 // así que acá asumimos que `window.supabase` ya existe.
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+);
