@@ -65,6 +65,15 @@
         color: var(--gris);
       }
 
+      .card {
+        background-color: whitesmoke;
+        width: 100%;
+        height: auto;
+        padding: 25px;
+        border: 0.5px solid black;
+        border-radius: 7px;
+      }
+
       .postulacion-box {
         background: var(--blanco);
         border: 1px solid var(--gris-claro);
@@ -97,29 +106,30 @@
     <div id="vista-cargando" class="cargando">Cargando empleo...</div>
 
     <div id="vista-detalle" class="detalle-wrap oculto">
-      <a href="index.html" class="volver-link">← Volver al listado</a>
+      <div class="card">
+        <a href="index.html" class="volver-link">← Volver al listado</a>
 
-      <div class="detalle-header">
-        <span class="empresa-nombre" id="empleo-empresa"></span>
-        <h1 id="empleo-titulo"></h1>
-        <div class="detalle-tags" id="empleo-tags"></div>
-        <p class="detalle-salario oculto" id="empleo-salario"></p>
-      </div>
+        <div class="detalle-header">
+          <span class="empresa-nombre" id="empleo-empresa"></span>
+          <h1 id="empleo-titulo"></h1>
+          <div class="detalle-tags" id="empleo-tags"></div>
+          <p class="detalle-salario oculto" id="empleo-salario"></p>
+        </div>
 
-      <p class="detalle-descripcion" id="empleo-descripcion"></p>
+        <p class="detalle-descripcion" id="empleo-descripcion"></p>
 
-      <div class="empresa-box">
-        <div>
-          <strong id="empresa-nombre-box"></strong>
-          <p id="empresa-descripcion-box"></p>
+        <div class="empresa-box">
+          <div>
+            <strong id="empresa-nombre-box"></strong>
+            <p id="empresa-descripcion-box"></p>
+          </div>
+        </div>
+
+        <div class="postulacion-box" id="caja-postulacion">
+          <!-- Se llena dinámicamente según el estado de sesión / postulación -->
         </div>
       </div>
-
-      <div class="postulacion-box" id="caja-postulacion">
-        <!-- Se llena dinámicamente según el estado de sesión / postulación -->
-      </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
     <script src="js/api.js"></script>
