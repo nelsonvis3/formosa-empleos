@@ -200,6 +200,69 @@
         font-size: 0.92rem;
       }
 
+      /* ---------- Menú de perfil (ícono + dropdown), visible siempre pero
+       pensado especialmente para mobile donde reemplaza los links de texto ---------- */
+
+      .menu-perfil {
+        position: relative;
+      }
+      .menu-perfil-boton {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--piedra);
+        border: 1px solid var(--linea);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+      }
+      .menu-perfil-boton svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--negro);
+      }
+      .menu-perfil-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: var(--blanco);
+        border: 1px solid var(--linea);
+        border-radius: var(--radio);
+        min-width: 180px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        z-index: 20;
+      }
+      .menu-perfil-dropdown a,
+      .menu-perfil-dropdown button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 0.7rem 1rem;
+        font-size: 0.88rem;
+        color: var(--negro);
+        background: none;
+        border: none;
+        text-decoration: none;
+      }
+      .menu-perfil-dropdown a:hover,
+      .menu-perfil-dropdown button:hover {
+        background: var(--piedra);
+      }
+      .menu-perfil-dropdown button {
+        border-top: 1px solid var(--linea);
+        color: var(--rojo-error);
+      }
+
+      /* Nav de texto (desktop) vs. ícono de perfil (mobile) */
+      .nav-texto {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
       @media (max-width: 860px) {
         .layout {
           grid-template-columns: 1fr;
@@ -213,6 +276,15 @@
           padding: 1.5rem;
         }
         .col-lista.detalle-abierto {
+          display: none;
+        }
+        .nav-texto {
+          display: none;
+        }
+      }
+
+      @media (min-width: 861px) {
+        .menu-perfil {
           display: none;
         }
       }

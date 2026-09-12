@@ -376,6 +376,18 @@ async function renderCajaPostulacion(empleo) {
 
 // ---------- Nav dinámica ----------
 
+function toggleMenuPerfil() {
+  document.getElementById("menu-perfil-dropdown").classList.toggle("oculto");
+}
+
+// Cierra el dropdown si se toca afuera de él
+document.addEventListener("click", (e) => {
+  const menu = document.getElementById("menu-perfil");
+  if (menu && !menu.contains(e.target)) {
+    document.getElementById("menu-perfil-dropdown")?.classList.add("oculto");
+  }
+});
+
 async function actualizarNav() {
   const nav = document.getElementById("nav-links");
 
@@ -397,9 +409,25 @@ async function actualizarNav() {
       : "";
 
   nav.innerHTML = `
-    <a href="${destinoPanel}">Mi panel</a>
-    ${linkPerfil}
-    <button class="btn btn-secundario" onclick="cerrarSesionDesdeInicio()">Cerrar sesión</button>
+    <div class="nav-texto">
+      <a href="${destinoPanel}">Mi panel</a>
+      ${linkPerfil}
+      <button class="btn btn-secundario" onclick="cerrarSesionDesdeInicio()">Cerrar sesión</button>
+    </div>
+
+    <div class="menu-perfil" id="menu-perfil">
+      <button class="menu-perfil-boton" onclick="toggleMenuPerfil()" aria-label="Menú de cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </button>
+      <div class="menu-perfil-dropdown oculto" id="menu-perfil-dropdown">
+        <a href="${destinoPanel}">Mi panel</a>
+        ${linkPerfil}
+        <button onclick="cerrarSesionDesdeInicio()">Cerrar sesión</button>
+      </div>
+    </div>
   `;
 }
 
