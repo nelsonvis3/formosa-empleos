@@ -10,162 +10,244 @@
     />
     <link rel="stylesheet" href="css/styles.css" />
     <style>
-      .hero {
-        padding: 3.5rem 1.5rem 2.5rem;
-        text-align: center;
-        border-bottom: 1px solid var(--gris-claro);
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(320px, 420px) 1fr;
+        height: calc(100vh - 61px);
       }
-      .hero h1 {
-        font-size: 2.4rem;
-        max-width: 640px;
-        margin: 0 auto 0.6rem;
-      }
-      .hero p {
-        color: var(--gris);
-        font-size: 1.05rem;
-        max-width: 480px;
-        margin: 0 auto;
-      }
-      .hero-acciones {
-        margin-top: 1.5rem;
+
+      .col-lista {
+        border-right: 1px solid var(--linea);
         display: flex;
-        gap: 0.8rem;
-        justify-content: center;
-        flex-wrap: wrap;
+        flex-direction: column;
+        overflow: hidden;
       }
 
       .filtros {
         display: flex;
-        gap: 1rem;
-        padding: 1.5rem;
-        max-width: 1080px;
-        margin: 0 auto;
-        flex-wrap: wrap;
-        height: 85px;
+        gap: 0.6rem;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--linea);
+        flex-shrink: 0;
       }
       .filtros select {
-        width: auto;
-        border-radius: 5px;
-        background-color: transparent;
-        min-width: 160px;
+        font-size: 0.85rem;
+        padding: 0.45rem 0.6rem;
       }
 
-      .grid-empleos {
-        max-width: 1080px;
-        margin: 0 auto;
-        padding: 0 1.5rem 3rem;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.1rem;
+      .lista-scroll {
+        overflow-y: auto;
+        flex: 1;
       }
 
-      .empleo-card {
-        background: var(--blanco);
-        border: 1px solid var(--gris-claro);
-        border-radius: 10px;
-        padding: 1.4rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        transition: border-color 0.15s ease;
+      .empleo-item {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        border-bottom: 1px solid var(--linea);
+        padding: 1.1rem 1.25rem;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
       }
-      .empleo-card:hover {
-        border-color: var(--terracota);
+      .empleo-item:hover {
+        background: var(--piedra);
       }
-      .empleo-card h3 {
-        font-size: 1.1rem;
-        margin: 0;
+      .empleo-item.seleccionado {
+        background: var(--piedra);
+        box-shadow: inset 3px 0 0 var(--negro);
       }
-      .empleo-card .empresa-nombre {
-        color: var(--terracota);
-        font-size: 0.9rem;
-        font-weight: 500;
-      }
-      .empleo-card .empleo-desc {
-        color: var(--gris);
-        font-size: 0.9rem;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-      }
-      .empleo-card .empleo-tags {
-        display: flex;
-        gap: 0.4rem;
-        flex-wrap: wrap;
-        margin-top: 0.3rem;
-      }
-      .empleo-card .tag {
+      .empleo-item .empresa-nombre {
         font-size: 0.78rem;
         color: var(--gris);
-        background: var(--crema);
-        border: 1px solid var(--gris-claro);
-        padding: 0.2rem 0.6rem;
-        border-radius: 100px;
-      }
-      .empleo-card .empleo-salario {
-        font-size: 0.85rem;
-        color: var(--verde-monte);
         font-weight: 500;
-        margin-top: 0.2rem;
+        display: block;
+        margin-bottom: 0.2rem;
       }
-      .empleo-card a.btn {
-        margin-top: 0.6rem;
-        text-align: center;
+      .empleo-item h3 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 0 0 0.35rem 0;
+        color: var(--negro);
       }
-
-      .estado-vacio {
-        text-align: center;
-        padding: 4rem 1.5rem;
+      .empleo-item .empleo-meta {
+        display: flex;
+        gap: 0.5rem;
+        font-size: 0.78rem;
         color: var(--gris);
       }
+
+      .estado-vacio,
       .cargando-empleos {
         text-align: center;
         padding: 3rem 1.5rem;
         color: var(--gris);
-        grid-column: 1 / -1;
+        font-size: 0.9rem;
+      }
+
+      .col-detalle {
+        overflow-y: auto;
+        padding: 2.5rem 3rem;
+      }
+
+      .sin-seleccion {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gris);
+        font-size: 0.95rem;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .detalle-empresa-header {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 1.2rem;
+      }
+      .empresa-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radio);
+        background: var(--piedra);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--gris);
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .empresa-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .detalle-empresa-header .empresa-nombre {
+        font-size: 0.88rem;
+        color: var(--gris);
+        font-weight: 500;
+      }
+
+      .detalle-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.7rem;
+      }
+      .detalle-tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+      .detalle-tags .tag {
+        font-size: 0.78rem;
+        color: var(--gris);
+        border: 1px solid var(--linea);
+        padding: 0.25rem 0.7rem;
+        border-radius: var(--radio);
+      }
+      .detalle-salario {
+        color: var(--verde);
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+      }
+      .detalle-descripcion {
+        white-space: pre-wrap;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+        max-width: 620px;
+        font-size: 0.92rem;
+      }
+      .empresa-box {
+        max-width: 620px;
+        padding: 1rem 0;
+        border-top: 1px solid var(--linea);
+        border-bottom: 1px solid var(--linea);
+        margin-bottom: 1.75rem;
+      }
+      .empresa-box p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--gris);
+        line-height: 1.6;
+      }
+      .empresa-box .empresa-links {
+        margin-top: 0.5rem;
+        display: flex;
+        gap: 1rem;
+        font-size: 0.82rem;
+      }
+
+      .postulacion-box {
+        max-width: 480px;
+      }
+      .postulacion-box h3 {
+        font-size: 1rem;
+        margin-bottom: 0.6rem;
+      }
+      .estado-ya-postulado {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--verde);
+        font-weight: 500;
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 860px) {
+        .layout {
+          grid-template-columns: 1fr;
+          height: auto;
+        }
+        .col-lista {
+          border-right: none;
+          border-bottom: 1px solid var(--linea);
+        }
+        .col-detalle {
+          padding: 1.5rem;
+        }
+        .col-lista.detalle-abierto {
+          display: none;
+        }
       }
     </style>
   </head>
   <body>
     <header class="sitio-header">
       <a href="index.html" class="logo">Formosa<span>Empleos</span></a>
-      <nav id="nav-links">
-        <!-- Se completa dinámicamente según haya sesión activa o no -->
-      </nav>
+      <nav id="nav-links"></nav>
     </header>
 
-    <section class="hero">
-      <h1>Empleos en Formosa Capital, todos en un solo lugar</h1>
-      <p>
-        Buscá tu próximo trabajo o publicá una vacante para tu empresa, gratis.
-      </p>
-      <div class="hero-acciones">
-        <a href="#empleos" class="btn btn-primario">Ver empleos</a>
-        <a
-          href="login/login.html"
-          class="btn btn-secundario"
-          id="btn-publicar-hero"
-          >Publicar un empleo</a
-        >
+    <div class="layout">
+      <div class="col-lista" id="col-lista">
+        <div class="filtros">
+          <select id="filtro-rubro">
+            <option value="">Todos los rubros</option>
+          </select>
+          <select id="filtro-modalidad">
+            <option value="">Todas las modalidades</option>
+            <option value="presencial">Presencial</option>
+            <option value="remoto">Remoto</option>
+            <option value="hibrido">Híbrido</option>
+          </select>
+        </div>
+        <div class="lista-scroll" id="lista-scroll">
+          <p class="cargando-empleos">Cargando empleos...</p>
+        </div>
       </div>
-    </section>
 
-    <div class="filtros" id="empleos">
-      <select id="filtro-rubro">
-        <option value="">Todos los rubros</option>
-      </select>
-      <select id="filtro-modalidad">
-        <option value="">Todas las modalidades</option>
-        <option value="presencial">Presencial</option>
-        <option value="remoto">Remoto</option>
-        <option value="hibrido">Híbrido</option>
-      </select>
-    </div>
-
-    <div class="grid-empleos" id="grid-empleos">
-      <p class="cargando-empleos">Cargando empleos...</p>
+      <div class="col-detalle" id="col-detalle">
+        <div class="sin-seleccion" id="sin-seleccion">
+          <p>Elegí un empleo de la lista para ver el detalle.</p>
+        </div>
+        <div id="detalle-contenido" class="oculto"></div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

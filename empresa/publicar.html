@@ -39,33 +39,50 @@
       .campos-formulario-lista {
         margin-bottom: 1.2rem;
       }
+      .campo-formulario-item {
+        border: 1px solid var(--linea);
+        border-radius: var(--radio);
+        padding: 0.9rem;
+        margin-bottom: 0.7rem;
+      }
       .campo-formulario-fila {
         display: flex;
         gap: 0.5rem;
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.5rem;
       }
-      .campo-formulario-fila input {
+      .campo-formulario-fila input[type="text"] {
         flex: 1;
+      }
+      .campo-formulario-fila select {
+        width: auto;
+        flex-shrink: 0;
+      }
+      .campo-opciones-wrap {
+        margin-top: 0.5rem;
+      }
+      .campo-opciones-wrap input {
+        margin-bottom: 0.4rem;
       }
       .btn-quitar-campo {
         background: transparent;
         border: 1px solid var(--gris-claro);
-        border-radius: 6px;
+        border-radius: var(--radio);
         padding: 0 0.9rem;
         color: var(--rojo-error);
+        flex-shrink: 0;
       }
       .btn-agregar-campo {
         background: transparent;
-        border: 1px dashed var(--gris);
-        border-radius: 6px;
+        border: 1px dashed var(--gris-claro);
+        border-radius: var(--radio);
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
         color: var(--gris);
         width: 100%;
       }
       .btn-agregar-campo:hover {
-        border-color: var(--terracota);
-        color: var(--terracota);
+        border-color: var(--negro);
+        color: var(--negro);
       }
     </style>
   </head>

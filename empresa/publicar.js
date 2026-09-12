@@ -24,14 +24,47 @@ function agregarCampoFormulario() {
   const id = `campo-${contadorCampos}`;
   const lista = document.getElementById("campos-formulario-lista");
 
-  const fila = document.createElement("div");
-  fila.className = "campo-formulario-fila";
-  fila.id = id;
-  fila.innerHTML = `
-    <input type="text" placeholder="Ej: ¿Tenés experiencia previa?" class="input-pregunta">
-    <button type="button" class="btn-quitar-campo" onclick="quitarCampoFormulario('${id}')">✕</button>
+  const item = document.createElement("div");
+  item.className = "campo-formulario-item";
+  item.id = id;
+  item.innerHTML = `
+    <div class="campo-formulario-fila">
+      <input type="text" placeholder="Ej: ¿Tenés experiencia previa?" class="input-pregunta">
+      <select class="input-tipo-pregunta" onchange="toggleOpcionesCampo('${id}')">
+        <option value="texto">Respuesta libre</option>
+        <option value="si_no">Sí / No</option>
+        <option value="opcion_multiple">Opción múltiple</option>
+      </select>
+      <button type="button" class="btn-quitar-campo" onclick="quitarCampoFormulario('${id}')">✕</button>
+    </div>
+    <div class="campo-opciones-wrap oculto" id="${id}-opciones">
+      <input type="text" placeholder="Opción 1" class="input-opcion">
+      <input type="text" placeholder="Opción 2" class="input-opcion">
+      <button type="button" class="btn-agregar-campo" style="padding:0.4rem 0.8rem; font-size:0.82rem;" onclick="agregarOpcion('${id}')">
+        + Agregar opción
+      </button>
+    </div>
   `;
-  lista.appendChild(fila);
+  lista.appendChild(item);
+}
+
+function toggleOpcionesCampo(id) {
+  const item = document.getElementById(id);
+  const tipo = item.querySelector(".input-tipo-pregunta").value;
+  const opcionesWrap = document.getElementById(`${id}-opciones`);
+  opcionesWrap.classList.toggle("oculto", tipo !== "opcion_multiple");
+}
+
+function agregarOpcion(id) {
+  const opcionesWrap = document.getElementById(`${id}-opciones`);
+  const boton = opcionesWrap.querySelector(".btn-agregar-campo");
+  const cantidad = opcionesWrap.querySelectorAll(".input-opcion").length;
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = `Opción ${cantidad + 1}`;
+  input.className = "input-opcion";
+  opcionesWrap.insertBefore(input, boton);
 }
 
 function quitarCampoFormulario(id) {
@@ -39,11 +72,28 @@ function quitarCampoFormulario(id) {
 }
 
 function recolectarCamposFormulario() {
-  const preguntas = Array.from(document.querySelectorAll(".input-pregunta"))
-    .map((input) => input.value.trim())
-    .filter((texto) => texto.length > 0);
+  const items = document.querySelectorAll(".campo-formulario-item");
+  const campos = [];
 
-  return preguntas.map((pregunta) => ({ pregunta, tipo: "texto" }));
+  items.forEach((item) => {
+    const pregunta = item.querySelector(".input-pregunta").value.trim();
+    const tipo = item.querySelector(".input-tipo-pregunta").value;
+    if (!pregunta) return;
+
+    const campo = { pregunta, tipo };
+
+    if (tipo === "opcion_multiple") {
+      const opciones = Array.from(item.querySelectorAll(".input-opcion"))
+        .map((inp) => inp.value.trim())
+        .filter((v) => v.length > 0);
+      if (opciones.length < 2) return; // opción múltiple necesita al menos 2 opciones válidas
+      campo.opciones = opciones;
+    }
+
+    campos.push(campo);
+  });
+
+  return campos;
 }
 
 function mostrarError(mensaje) {
