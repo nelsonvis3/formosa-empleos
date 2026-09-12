@@ -80,6 +80,9 @@ create table public.perfiles_empresa (
   logo_url text,
   descripcion text,
   rubro text,
+  sitio_web text,
+  red_social text,
+  direccion text,
   estado text not null default 'pendiente' check (estado in ('pendiente', 'aprobada', 'rechazada')),
   updated_at timestamptz not null default now()
 );
