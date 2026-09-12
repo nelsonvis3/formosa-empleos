@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi empresa - Formosa Empleos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      .perfil-header {
+        margin: 2rem 0 1.5rem 0;
+      }
+      .logo-box {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 1rem;
+        background: var(--piedra);
+        border-radius: var(--radio);
+        margin-bottom: 1.3rem;
+      }
+      .logo-preview {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radio);
+        background: var(--blanco);
+        border: 1px solid var(--linea);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 1.3rem;
+        color: var(--gris);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .logo-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .logo-box p {
+        margin: 0 0 0.5rem 0;
+        font-size: 0.85rem;
+        color: var(--gris);
+      }
+      .fila-doble {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      @media (max-width: 560px) {
+        .fila-doble {
+          grid-template-columns: 1fr;
+        }
+      }
+      .cargando {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gris);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sitio-header">
+      <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
+      <nav>
+        <a href="dashboard.html">Mis empleos</a>
+        <button class="btn btn-secundario" onclick="cerrarSesion()">
+          Cerrar sesión
+        </button>
+      </nav>
+    </header>
+
+    <div class="contenedor">
+      <div id="vista-cargando" class="cargando">Cargando tu perfil...</div>
+
+      <div id="vista-perfil" class="oculto">
+        <div class="perfil-header">
+          <h1>Mi empresa</h1>
+          <p style="color: var(--gris)">
+            Esta información aparece en el detalle de tus empleos publicados.
+          </p>
+        </div>
+
+        <div class="tarjeta">
+          <div class="logo-box">
+            <div class="logo-preview" id="logo-preview"></div>
+            <div>
+              <p>
+                Logo de la empresa (opcional). Si no subís uno, se muestra la
+                inicial del nombre.
+              </p>
+              <label
+                class="btn btn-secundario"
+                style="cursor: pointer; display: inline-block"
+              >
+                Subir logo
+                <input
+                  type="file"
+                  id="input-logo"
+                  accept="image/*"
+                  style="display: none"
+                />
+              </label>
+            </div>
+          </div>
+
+          <form id="form-perfil-empresa">
+            <div class="campo">
+              <label for="nombre_empresa">Nombre de la empresa</label>
+              <input type="text" id="nombre_empresa" required />
+            </div>
+
+            <div class="fila-doble">
+              <div class="campo">
+                <label for="cuit">CUIT</label>
+                <input type="text" id="cuit" placeholder="20-12345678-9" />
+              </div>
+              <div class="campo">
+                <label for="rubro">Rubro</label>
+                <input
+                  type="text"
+                  id="rubro"
+                  placeholder="Ej: Comercio, Gastronomía"
+                />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="descripcion">Descripción</label>
+              <textarea
+                id="descripcion"
+                placeholder="Contá brevemente a qué se dedica tu empresa..."
+              ></textarea>
+            </div>
+
+            <div class="fila-doble">
+              <div class="campo">
+                <label for="sitio_web">Sitio web (opcional)</label>
+                <input type="url" id="sitio_web" placeholder="https://..." />
+              </div>
+              <div class="campo">
+                <label for="red_social">Red social (opcional)</label>
+                <input
+                  type="url"
+                  id="red_social"
+                  placeholder="https://instagram.com/..."
+                />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="direccion">Dirección física (opcional)</label>
+              <input
+                type="text"
+                id="direccion"
+                placeholder="Ej: San Martín 1234, Formosa Capital"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-primario">
+              Guardar cambios
+            </button>
+            <p class="mensaje-exito oculto" id="exito-perfil">
+              Perfil actualizado.
+            </p>
+            <p class="mensaje-error oculto" id="error-perfil"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="perfil.js"></script>
+  </body>
+</html>

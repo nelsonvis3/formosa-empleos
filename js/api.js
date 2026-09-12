@@ -1,17 +1,3 @@
-// ============================================================
-// API - capa de abstracción sobre Supabase
-// ============================================================
-// TODO el resto del código (UI, páginas) llama a las funciones
-// de este archivo, NUNCA a `supabaseClient` directamente.
-//
-// ¿Por qué? El día que migremos de Supabase a un backend propio
-// (FastAPI), solo hay que reescribir el CONTENIDO de estas
-// funciones para que hagan fetch() a la nueva API en vez de
-// llamar a Supabase. La firma de cada función (nombre, params,
-// qué devuelve) se mantiene igual, así que el resto del código
-// no se toca.
-// ============================================================
-
 const Api = {
   // ---------- AUTH ----------
 
@@ -202,6 +188,18 @@ const Api = {
 
   async subirCV(usuarioId, archivo) {
     const path = `cvs/${usuarioId}-${Date.now()}.pdf`;
+    const { error: uploadError } = await supabaseClient.storage
+      .from("archivos")
+      .upload(path, archivo, { upsert: true });
+    if (uploadError) throw uploadError;
+
+    const { data } = supabaseClient.storage.from("archivos").getPublicUrl(path);
+    return data.publicUrl;
+  },
+
+  async subirLogo(usuarioId, archivo) {
+    const extension = archivo.name.split(".").pop();
+    const path = `logos/${usuarioId}-${Date.now()}.${extension}`;
     const { error: uploadError } = await supabaseClient.storage
       .from("archivos")
       .upload(path, archivo, { upsert: true });
