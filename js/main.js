@@ -391,8 +391,14 @@ async function actualizarNav() {
         ? "admin/panel.html"
         : "postulante/mis-postulaciones.html";
 
+  const linkPerfil =
+    usuarioActual.tipo === "postulante"
+      ? `<a href="postulante/perfil.html">Mi perfil</a>`
+      : "";
+
   nav.innerHTML = `
     <a href="${destinoPanel}">Mi panel</a>
+    ${linkPerfil}
     <button class="btn btn-secundario" onclick="cerrarSesionDesdeInicio()">Cerrar sesión</button>
   `;
 }
