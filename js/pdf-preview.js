@@ -24,13 +24,17 @@ const PdfPreview = {
       return;
     }
     pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js";
+      "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.js";
     this._workerConfigurado = true;
   },
 
   // Renderiza la primera página del PDF en `url` dentro del elemento
   // con id `contenedorId`. Muestra un estado de carga mientras procesa,
-  // y un fallback simple (ícono + link) si el PDF no se puede renderizar.
+  // y un fallback con link directo al archivo si el render falla —
+  // algunos navegadores (Brave, con su bloqueo de telemetría de pdf.js;
+  // algunos adblockers) impiden cargar la librería en sí, sin importar
+  // desde qué CDN se sirva, así que el fallback tiene que seguir siendo
+  // útil, no solo informativo.
   async render(contenedorId, url, opciones = {}) {
     const escala = opciones.escala || 0.35;
     const contenedor = document.getElementById(contenedorId);
@@ -40,6 +44,12 @@ const PdfPreview = {
     contenedor.innerHTML = `<div class="pdf-preview-cargando">Cargando vista previa...</div>`;
 
     try {
+      if (typeof pdfjsLib === "undefined") {
+        throw new Error(
+          "pdfjsLib no disponible (posiblemente bloqueado por el navegador)",
+        );
+      }
+
       const pdf = await pdfjsLib.getDocument(url).promise;
       const pagina = await pdf.getPage(1);
       const viewport = pagina.getViewport({ scale: escala });
@@ -57,10 +67,10 @@ const PdfPreview = {
     } catch (error) {
       console.error("PdfPreview: no se pudo renderizar el PDF", error);
       contenedor.innerHTML = `
-        <div class="pdf-preview-fallback">
+        <a href="${url}" target="_blank" rel="noopener" class="pdf-preview-fallback">
           <span>📄</span>
-          <p>No se pudo mostrar la vista previa</p>
-        </div>
+          <p>Ver CV (PDF)</p>
+        </a>
       `;
     }
   },
