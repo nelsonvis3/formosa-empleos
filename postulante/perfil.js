@@ -21,6 +21,7 @@ function escaparHtml(texto) {
 
 function renderCvBox() {
   const box = document.getElementById("cv-box");
+  const previewWrap = document.getElementById("cv-preview-wrap");
 
   if (perfilActual.cv_url) {
     box.className = "cv-box";
@@ -33,7 +34,10 @@ function renderCvBox() {
         </label>
       </div>
     `;
+    previewWrap.classList.remove("oculto");
+    PdfPreview.render("cv-preview", perfilActual.cv_url);
   } else {
+    previewWrap.classList.add("oculto");
     box.className = "cv-box sin-cv";
     box.innerHTML = `
       <p>Todavía no subiste tu CV. Sin esto, las postulaciones directas van sin CV adjunto.</p>
