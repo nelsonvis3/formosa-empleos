@@ -348,12 +348,12 @@ button {
   min-width: 280px;
   border: 1px solid var(--linea);
   border-radius: var(--radio);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
 .cv-panel-header {
+  border-radius: var(--radio) var(--radio) 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -401,6 +401,7 @@ button {
   height: 420px;
   border: none;
   background: var(--piedra);
+  border-radius: 0 0 var(--radio) var(--radio);
 }
 
 @media (max-width: 640px) {
@@ -411,7 +412,8 @@ button {
     width: 100%;
   }
   .cv-panel-iframe {
-    height: 340px;
+    height: 75vh;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
