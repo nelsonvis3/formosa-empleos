@@ -140,7 +140,12 @@
             <div class="fila-doble">
               <div class="campo">
                 <label for="cuit">CUIT</label>
-                <input type="text" id="cuit" placeholder="20-12345678-9" />
+                <input
+                  type="text"
+                  id="cuit"
+                  placeholder="20-12345678-9"
+                  required
+                />
               </div>
               <div class="campo">
                 <label for="rubro">Rubro</label>
@@ -148,6 +153,7 @@
                   type="text"
                   id="rubro"
                   placeholder="Ej: Comercio, Gastronomía"
+                  required
                 />
               </div>
             </div>
@@ -157,6 +163,7 @@
               <textarea
                 id="descripcion"
                 placeholder="Contá brevemente a qué se dedica tu empresa..."
+                required
               ></textarea>
             </div>
 
@@ -170,14 +177,14 @@
                 <input
                   type="url"
                   id="red_social"
-                  placeholder="https://instagram.com/... 
-                  required"
+                  placeholder="https://instagram.com/... "
+                  required
                 />
               </div>
             </div>
 
             <div class="campo">
-              <label for="direccion">Dirección física </label>
+              <label for="direccion">Dirección física</label>
               <input
                 type="text"
                 id="direccion"
