@@ -14,21 +14,45 @@
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        padding: 1rem;
-        background: var(--gris-claro);
-        border-radius: 8px;
+        padding: 1rem 1.1rem;
+        background: var(--piedra);
+        border: 1px solid var(--linea);
+        border-radius: var(--radio);
         margin-bottom: 1.3rem;
         flex-wrap: wrap;
       }
       .cv-box.sin-cv {
-        background: #fbebd8;
+        background: var(--blanco);
+        border-style: dashed;
       }
-      .cv-box p {
-        margin: 0;
-        font-size: 0.9rem;
+      .cv-box-estado {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.88rem;
+        color: var(--negro);
       }
-      .cv-box input[type="file"] {
+      .cv-box-check {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--verde);
+        color: var(--blanco);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        flex-shrink: 0;
+      }
+      .cv-box-link {
         font-size: 0.85rem;
+        color: var(--negro);
+        text-decoration: underline;
+        text-decoration-color: var(--gris-claro);
+        text-underline-offset: 3px;
+      }
+      .cv-box-link:hover {
+        text-decoration-color: var(--negro);
       }
       .habilidades-tags {
         display: flex;
@@ -172,7 +196,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../js/supabase-client.js"></script>
     <script src="../js/api.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
     <script src="../js/pdf-preview.js"></script>
     <script src="perfil.js"></script>
   </body>

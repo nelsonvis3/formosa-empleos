@@ -1,77 +1,82 @@
 // ============================================================
-// PDF PREVIEW - renderiza la primera página de un PDF como thumbnail
+// CV VIEWER - tarjeta de CV + panel lateral con visor nativo del PDF
 // ============================================================
-// Requiere que el script de pdf.js (UMD, vía CDN) ya esté cargado en
-// la página ANTES de este archivo. Ver el <script> correspondiente en
-// el HTML de cada página que lo usa.
+// No usa pdf.js: algunos navegadores (Brave, por su bloqueo de
+// telemetría interno) impiden cargar esa librería sin importar el CDN.
+// En su lugar, usa el visor de PDF nativo del navegador dentro de un
+// <iframe> — el mismo motor que abre un PDF si lo abrís directo, sin
+// depender de ninguna librería externa que se pueda bloquear.
 //
 // Uso:
 //   <div id="mi-contenedor"></div>
 //   <script>
-//     PdfPreview.render('mi-contenedor', 'https://.../archivo.pdf');
+//     CvViewer.render('mi-contenedor', 'https://.../archivo.pdf', 'nombre-archivo.pdf');
 //   </script>
 // ============================================================
 
-const PdfPreview = {
-  _workerConfigurado: false,
+const CvViewer = {
+  _contador: 0,
 
-  _configurarWorkerSiHaceFalta() {
-    if (this._workerConfigurado) return;
-    if (typeof pdfjsLib === "undefined") {
-      console.error(
-        "PdfPreview: pdfjsLib no está cargado. Agregá el <script> de pdf.js antes de este archivo.",
-      );
-      return;
+  // Extrae un nombre de archivo legible de la URL (que suele tener un
+  // uuid + timestamp), para mostrar algo más prolijo que la ruta completa.
+  _nombreCorto(url) {
+    try {
+      const partes = url.split("/").pop().split("-");
+      return "CV.pdf";
+    } catch {
+      return "CV.pdf";
     }
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.js";
-    this._workerConfigurado = true;
   },
 
-  // Renderiza la primera página del PDF en `url` dentro del elemento
-  // con id `contenedorId`. Muestra un estado de carga mientras procesa,
-  // y un fallback con link directo al archivo si el render falla —
-  // algunos navegadores (Brave, con su bloqueo de telemetría de pdf.js;
-  // algunos adblockers) impiden cargar la librería en sí, sin importar
-  // desde qué CDN se sirva, así que el fallback tiene que seguir siendo
-  // útil, no solo informativo.
-  async render(contenedorId, url, opciones = {}) {
-    const escala = opciones.escala || 0.35;
+  render(contenedorId, url) {
     const contenedor = document.getElementById(contenedorId);
     if (!contenedor) return;
 
-    this._configurarWorkerSiHaceFalta();
-    contenedor.innerHTML = `<div class="pdf-preview-cargando">Cargando vista previa...</div>`;
+    this._contador++;
+    const panelId = `cv-panel-${this._contador}`;
 
-    try {
-      if (typeof pdfjsLib === "undefined") {
-        throw new Error(
-          "pdfjsLib no disponible (posiblemente bloqueado por el navegador)",
-        );
-      }
+    contenedor.innerHTML = `
+      <div class="cv-viewer-wrap">
+        <button type="button" class="cv-tarjeta" onclick="CvViewer.toggle('${panelId}', '${url}')">
+          <span class="cv-tarjeta-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <path d="M14 2v6h6"></path>
+            </svg>
+          </span>
+          <span class="cv-tarjeta-texto">
+            <strong>Curriculum Vitae</strong>
+            <span>Click para ver</span>
+          </span>
+        </button>
 
-      const pdf = await pdfjsLib.getDocument(url).promise;
-      const pagina = await pdf.getPage(1);
-      const viewport = pagina.getViewport({ scale: escala });
+        <div class="cv-panel oculto" id="${panelId}">
+          <div class="cv-panel-header">
+            <span>Vista previa del CV</span>
+            <div class="cv-panel-acciones">
+              <a href="${url}" download class="cv-panel-btn" title="Descargar" onclick="event.stopPropagation()">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </a>
+              <button type="button" class="cv-panel-btn" title="Cerrar" onclick="CvViewer.cerrar('${panelId}')">✕</button>
+            </div>
+          </div>
+          <iframe class="cv-panel-iframe" src="${url}"></iframe>
+        </div>
+      </div>
+    `;
+  },
 
-      const canvas = document.createElement("canvas");
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      canvas.className = "pdf-preview-canvas";
+  toggle(panelId, url) {
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.classList.toggle("oculto");
+  },
 
-      const contexto = canvas.getContext("2d");
-      await pagina.render({ canvasContext: contexto, viewport }).promise;
-
-      contenedor.innerHTML = "";
-      contenedor.appendChild(canvas);
-    } catch (error) {
-      console.error("PdfPreview: no se pudo renderizar el PDF", error);
-      contenedor.innerHTML = `
-        <a href="${url}" target="_blank" rel="noopener" class="pdf-preview-fallback">
-          <span>📄</span>
-          <p>Ver CV (PDF)</p>
-        </a>
-      `;
-    }
+  cerrar(panelId) {
+    document.getElementById(panelId)?.classList.add("oculto");
   },
 };

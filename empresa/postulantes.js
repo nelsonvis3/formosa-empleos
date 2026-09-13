@@ -96,7 +96,6 @@ function renderPostulantes(postulaciones) {
           </div>
 
           <div class="postulante-acciones">
-            ${p.cv_usado_url ? `<a href="${p.cv_usado_url}" target="_blank" rel="noopener" class="btn-cv">Ver CV</a>` : ""}
             <select onchange="cambiarEstado('${p.id}', this.value)">
               <option value="enviada" ${p.estado === "enviada" ? "selected" : ""}>Enviada</option>
               <option value="vista" ${p.estado === "vista" ? "selected" : ""}>Vista</option>
@@ -106,11 +105,20 @@ function renderPostulantes(postulaciones) {
           </div>
         </div>
 
+        ${p.cv_usado_url ? `<div id="cv-preview-${p.id}" style="margin-top: 0.8rem;"></div>` : ""}
         ${renderRespuestasFormulario(p.respuestas_formulario)}
       </div>
     `;
     })
     .join("");
+
+  // Los previews se renderizan después de insertar el HTML, porque
+  // CvViewer.render() necesita que el contenedor ya exista en el DOM.
+  postulaciones.forEach((p) => {
+    if (p.cv_usado_url) {
+      CvViewer.render(`cv-preview-${p.id}`, p.cv_usado_url);
+    }
+  });
 }
 
 async function cambiarEstado(postulacionId, nuevoEstado) {

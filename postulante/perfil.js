@@ -26,27 +26,28 @@ function renderCvBox() {
   if (perfilActual.cv_url) {
     box.className = "cv-box";
     box.innerHTML = `
-      <p>📄 Ya tenés un CV cargado — <a href="${perfilActual.cv_url}" target="_blank" rel="noopener">verlo</a></p>
-      <div>
-        <label class="btn btn-secundario" style="cursor:pointer;">
-          Reemplazar CV
-          <input type="file" id="input-cv" accept="application/pdf" style="display:none;">
-        </label>
+      <div class="cv-box-estado">
+        <span class="cv-box-check">✓</span>
+        <span>Tenés un CV cargado</span>
       </div>
+      <label class="cv-box-link" style="cursor:pointer;">
+        Reemplazar
+        <input type="file" id="input-cv" accept="application/pdf" style="display:none;">
+      </label>
     `;
     previewWrap.classList.remove("oculto");
-    PdfPreview.render("cv-preview", perfilActual.cv_url);
+    CvViewer.render("cv-preview", perfilActual.cv_url);
   } else {
     previewWrap.classList.add("oculto");
     box.className = "cv-box sin-cv";
     box.innerHTML = `
-      <p>Todavía no subiste tu CV. Sin esto, las postulaciones directas van sin CV adjunto.</p>
-      <div>
-        <label class="btn btn-primario" style="cursor:pointer;">
-          Subir CV (PDF)
-          <input type="file" id="input-cv" accept="application/pdf" style="display:none;">
-        </label>
+      <div class="cv-box-estado">
+        <span>Todavía no subiste tu CV</span>
       </div>
+      <label class="btn btn-primario" style="cursor:pointer;">
+        Subir CV (PDF)
+        <input type="file" id="input-cv" accept="application/pdf" style="display:none;">
+      </label>
     `;
   }
 

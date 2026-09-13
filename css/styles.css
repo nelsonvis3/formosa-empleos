@@ -277,50 +277,224 @@ button {
   display: none !important;
 }
 
-/* ---------- Vista previa de CV (PDF renderizado) ---------- */
+/* ---------- Visor de CV: tarjeta + panel lateral con iframe nativo ---------- */
 
-.pdf-preview-canvas {
-  max-width: 100%;
-  border: 1px solid var(--linea);
-  border-radius: var(--radio);
-  display: block;
+.cv-viewer-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.pdf-preview-cargando {
-  padding: 2rem 1rem;
-  text-align: center;
-  color: var(--gris);
-  font-size: 0.85rem;
+.cv-tarjeta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 220px;
+  padding: 0.9rem 1rem;
+  background: var(--blanco);
   border: 1px solid var(--linea);
   border-radius: var(--radio);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.12s ease,
+    background 0.12s ease;
+  flex-shrink: 0;
 }
 
-.pdf-preview-fallback {
-  display: block;
-  padding: 1.5rem 1rem;
-  text-align: center;
-  color: var(--negro);
-  font-size: 0.85rem;
-  border: 1px solid var(--linea);
-  border-radius: var(--radio);
-  text-decoration: none;
+.cv-tarjeta:hover {
+  border-color: var(--negro);
   background: var(--piedra);
 }
 
-.pdf-preview-fallback:hover {
-  border-color: var(--negro);
+.cv-tarjeta-icono {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radio);
+  background: var(--piedra);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cv-tarjeta-icono svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--negro);
+}
+
+.cv-tarjeta-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.cv-tarjeta-texto strong {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--negro);
+}
+
+.cv-tarjeta-texto span {
+  font-size: 0.78rem;
+  color: var(--gris);
+}
+
+.cv-panel {
+  flex: 1;
+  min-width: 280px;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.9rem;
+  background: var(--piedra);
+  border-bottom: 1px solid var(--linea);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--negro);
+}
+
+.cv-panel-acciones {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.cv-panel-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radio);
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--gris);
+  font-size: 0.85rem;
   text-decoration: none;
 }
 
-.pdf-preview-fallback p {
-  margin: 0;
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-color: var(--gris-claro);
+.cv-panel-btn:hover {
+  background: var(--linea);
+  color: var(--negro);
 }
 
-.pdf-preview-fallback span {
-  font-size: 1.8rem;
+.cv-panel-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+.cv-panel-iframe {
+  width: 100%;
+  height: 420px;
+  border: none;
+  background: var(--piedra);
+}
+
+@media (max-width: 640px) {
+  .cv-viewer-wrap {
+    flex-direction: column;
+  }
+  .cv-panel {
+    width: 100%;
+  }
+  .cv-panel-iframe {
+    height: 340px;
+  }
+}
+
+/* ============================================================
+   MENÚ DE PERFIL MOBILE (ícono + dropdown)
+   Reemplaza los links de texto del header en pantallas angostas.
+   Se usa en TODAS las páginas del sitio que tienen sitio-header
+   con nav — el HTML de cada página envuelve su nav existente en
+   .nav-texto y agrega un bloque .menu-perfil con el mismo contenido.
+   ============================================================ */
+
+.nav-texto {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.menu-perfil {
+  position: relative;
+  display: none;
+}
+
+.menu-perfil-boton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--piedra);
+  border: 1px solid var(--linea);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu-perfil-boton svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--negro);
+}
+
+.menu-perfil-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--blanco);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  min-width: 180px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 20;
+}
+
+.menu-perfil-dropdown a,
+.menu-perfil-dropdown button {
   display: block;
-  margin-bottom: 0.4rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.7rem 1rem;
+  font-size: 0.88rem;
+  color: var(--negro);
+  background: none;
+  border: none;
+  text-decoration: none;
+  font-family: var(--fuente);
+}
+
+.menu-perfil-dropdown a:hover,
+.menu-perfil-dropdown button:hover {
+  background: var(--piedra);
+}
+
+.menu-perfil-dropdown button.link-cerrar-sesion {
+  border-top: 1px solid var(--linea);
+  color: var(--rojo-error);
+}
+
+@media (max-width: 768px) {
+  .nav-texto {
+    display: none;
+  }
+  .menu-perfil {
+    display: block;
+  }
 }
