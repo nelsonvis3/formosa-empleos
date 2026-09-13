@@ -28,7 +28,7 @@ function renderCvBox() {
     box.innerHTML = `
       <div class="cv-box-estado">
         <span class="cv-box-check">✓</span>
-        <span>Tenés un CV cargado</span>
+        <span>CV cargado con éxito</span>
       </div>
       <label class="cv-box-link" style="cursor:pointer;">
         Reemplazar
