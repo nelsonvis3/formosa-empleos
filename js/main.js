@@ -375,18 +375,8 @@ async function renderCajaPostulacion(empleo) {
 }
 
 // ---------- Nav dinámica ----------
-
-function toggleMenuPerfil() {
-  document.getElementById("menu-perfil-dropdown").classList.toggle("oculto");
-}
-
-// Cierra el dropdown si se toca afuera de él
-document.addEventListener("click", (e) => {
-  const menu = document.getElementById("menu-perfil");
-  if (menu && !menu.contains(e.target)) {
-    document.getElementById("menu-perfil-dropdown")?.classList.add("oculto");
-  }
-});
+// toggleMenuPerfil() y su listener de click-afuera viven en
+// js/menu-perfil.js, compartido con el resto de las páginas del sitio.
 
 async function actualizarNav() {
   const nav = document.getElementById("nav-links");

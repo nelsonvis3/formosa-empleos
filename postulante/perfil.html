@@ -94,11 +94,37 @@
   <body>
     <header class="sitio-header">
       <a href="../index.html" class="logo">Formosa<span>Empleos</span></a>
-      <nav>
-        <a href="mis-postulaciones.html">Mis postulaciones</a>
-        <button class="btn btn-secundario" onclick="cerrarSesion()">
-          Cerrar sesión
-        </button>
+      <nav id="nav-links">
+        <div class="nav-texto">
+          <a href="mis-postulaciones.html">Mis postulaciones</a>
+          <button class="btn btn-secundario" onclick="cerrarSesion()">
+            Cerrar sesión
+          </button>
+        </div>
+        <div class="menu-perfil" id="menu-perfil">
+          <button
+            class="menu-perfil-boton"
+            onclick="toggleMenuPerfil()"
+            aria-label="Menú de cuenta"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </button>
+          <div class="menu-perfil-dropdown oculto" id="menu-perfil-dropdown">
+            <a href="mis-postulaciones.html">Mis postulaciones</a>
+            <button class="link-cerrar-sesion" onclick="cerrarSesion()">
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
       </nav>
     </header>
 
@@ -197,6 +223,7 @@
     <script src="../js/supabase-client.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/pdf-preview.js"></script>
+    <script src="../js/menu-perfil.js"></script>
     <script src="perfil.js"></script>
   </body>
 </html>
