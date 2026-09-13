@@ -13,7 +13,20 @@
       .layout {
         display: grid;
         grid-template-columns: minmax(320px, 420px) 1fr;
-        height: calc(100vh - 61px);
+        height: calc(100vh - 61px - 40px);
+      }
+
+      .sitio-footer {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top: 1px solid var(--linea);
+        font-size: 0.78rem;
+        color: var(--gris);
+      }
+      .sitio-footer a {
+        color: var(--gris);
       }
 
       .col-lista {
@@ -249,6 +262,10 @@
         <div id="detalle-contenido" class="oculto"></div>
       </div>
     </div>
+
+    <footer class="sitio-footer">
+      <a href="privacidad.html">Política de Privacidad</a>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
