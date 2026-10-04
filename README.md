@@ -1,126 +1,232 @@
-# Formosa Empleos
+Formosa Empleos
 
-Portal de empleos para Formosa Capital que conecta empresas locales con postulantes. Permite a las empresas publicar ofertas de trabajo (previa aprobación administrativa) y a los postulantes buscar, filtrar y aplicar directamente desde la plataforma.
+Plataforma web de empleo para Formosa Capital que conecta empresas locales con personas en búsqueda de trabajo.
 
-🔗 **Demo en producción:** [formosa-empleos.vercel.app](https://formosa-empleos.vercel.app)
-📦 **Repositorio:** [github.com/nelsonvis3/formosa-empleos](https://github.com/nelsonvis3/formosa-empleos)
+El proyecto permite a las empresas publicar oportunidades laborales y gestionar postulaciones, mientras que los postulantes pueden explorar ofertas, filtrarlas y aplicar directamente desde la plataforma.
 
----
+La plataforma incorpora diferentes roles de usuario, validación administrativa de empresas, formularios de postulación personalizados y notificaciones por correo.
 
-## Tabla de contenidos
+🌐 Ver aplicación en producción →
+📦 Ver repositorio →
 
-- [Características](#características)
-- [Stack tecnológico](#stack-tecnológico)
-- [Arquitectura](#arquitectura)
-- [Roadmap técnico](#roadmap-técnico)
-- [Instalación y configuración local](#instalación-y-configuración-local)
-- [Variables de entorno](#variables-de-entorno)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Roles de usuario](#roles-de-usuario)
-- [Capturas](#capturas)
-- [Licencia](#licencia)
+Tabla de contenidos
+Características
+Stack tecnológico
+Arquitectura
+Roadmap técnico
+Instalación y configuración local
+Variables de entorno
+Estructura del proyecto
+Roles de usuario
+Capturas
+Licencia
+Características
+Para postulantes
+Exploración pública de ofertas sin necesidad de registrarse.
+Búsqueda y filtrado de oportunidades laborales.
+Postulación directa desde la plataforma.
+Formularios personalizados según cada oferta.
+Seguimiento del estado de las postulaciones.
+Para empresas
+Registro con aprobación administrativa.
+Publicación y gestión de ofertas laborales.
+Visualización y gestión de postulantes.
+Estados dentro del proceso de selección.
+Formularios de postulación personalizados.
+Perfil empresarial con logo, sitio web, redes sociales y dirección.
+Administración
+Validación y aprobación de cuentas empresariales.
+Control de las empresas habilitadas para publicar ofertas.
+Experiencia de usuario
+Interfaz responsive.
+Vista dividida para explorar ofertas y consultar sus detalles sin recargar la página.
+Actualización dinámica del contenido.
+Notificaciones transaccionales por correo electrónico.
+Stack tecnológico
+Capa	Tecnología
+Frontend	HTML · CSS · JavaScript
+Backend / Auth / DB	Supabase · PostgreSQL · Row Level Security
+Almacenamiento	Supabase Storage
+Envío de correo	Resend mediante SMTP
+Hosting	Vercel
+Tipografía / UI	Archivo · gris oscuro · blanco · acento verde
+Arquitectura
 
----
+La versión actual del proyecto utiliza una arquitectura basada en servicios gestionados de Supabase.
 
-## Características
+El frontend consume directamente los servicios de Supabase para autenticación, acceso a PostgreSQL y almacenamiento de archivos. Las políticas de Row Level Security (RLS) controlan el acceso a los datos según el rol y los permisos de cada usuario.
 
-- **Doble registro de usuarios**: flujos de alta diferenciados para empresas y para postulantes.
-- **Aprobación administrativa de empresas**: las cuentas de empresa requieren validación manual antes de poder publicar ofertas, como control básico de calidad y prevención de spam.
-- **Publicación y listado público de ofertas**: cualquier visitante puede explorar las vacantes activas sin necesidad de registrarse.
-- **Postulación flexible**: el postulante puede aplicar de forma directa o completar un formulario personalizado definido por la empresa, con soporte para tres tipos de pregunta (texto libre, sí/no y opción múltiple).
-- **Gestión de postulantes**: la empresa visualiza a los postulantes de cada oferta y actualiza su estado dentro del proceso de selección.
-- **Perfil de empresa enriquecido**: carga opcional de logo, sitio web, redes sociales y dirección física.
-- **Notificaciones por correo**: confirmaciones y notificaciones transaccionales vía SMTP.
-- **UI sin recargas de página**: listado y detalle de ofertas en una vista dividida (split view), con actualización dinámica del panel de detalle.
+┌─────────────────────────────┐
+│          Frontend           │
+│       HTML / CSS / JS       │
+│          (Vercel)           │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│          Supabase           │
+│                             │
+│ Auth · PostgreSQL · RLS     │
+│ Storage                     │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│           Resend            │
+│       Email / SMTP          │
+└─────────────────────────────┘
 
-## Stack tecnológico
+Esta arquitectura permitió desarrollar y validar rápidamente el producto completo, incluyendo el modelo de datos, autenticación, permisos, flujos de usuario y experiencia de uso, sin incorporar inicialmente una infraestructura de backend propia.
 
-| Capa | Tecnología |
-|---|---|
-| Frontend | HTML, CSS, JavaScript |
-| Backend / Auth / DB | Supabase (PostgreSQL con Row Level Security) |
-| Envío de correo | SMTP vía Resend |
-| Hosting | Vercel |
-| Tipografía / UI | Archivo, paleta gris oscuro + blanco con acento verde |
+Seguridad y permisos
 
-## Arquitectura
+El acceso a los datos se controla mediante políticas de Row Level Security en PostgreSQL.
 
-La v1 del proyecto prioriza velocidad de entrega: el frontend consume directamente los servicios gestionados de Supabase (autenticación, base de datos PostgreSQL con políticas de Row Level Security, y almacenamiento de archivos), sin una capa de backend propia intermedia.
+Esto permite aplicar reglas diferentes según el tipo de usuario:
 
-```
-┌─────────────┐        ┌──────────────────────────┐
-│  Frontend   │ ─────► │        Supabase           │
-│ HTML/CSS/JS │        │  Auth · PostgreSQL (RLS)  │
-│  (Vercel)   │        │  Storage · SMTP (Resend)  │
-└─────────────┘        └──────────────────────────┘
-```
+Los postulantes pueden acceder a sus propias postulaciones.
+Las empresas pueden administrar únicamente sus ofertas y postulantes.
+Las cuentas empresariales requieren aprobación administrativa.
+Las operaciones administrativas están restringidas al rol correspondiente.
+Roadmap técnico
 
-Esta decisión permitió validar el producto completo —modelo de datos, flujos de usuario y UI— sin invertir tiempo inicial en infraestructura de servidor propia.
+La versión actual fue diseñada como una primera versión funcional del producto. Como evolución de la arquitectura, está planificada una migración hacia un backend propio utilizando FastAPI + PostgreSQL.
 
-## Roadmap técnico
+El objetivo de esta migración es reducir la dependencia de servicios gestionados para la lógica de negocio y obtener mayor control sobre:
 
-> ⚠️ **Migración de backend planificada.** El proyecto va a migrar su backend de Supabase a una **API propia construida con FastAPI**, con PostgreSQL autogestionado como base de datos. El objetivo es dejar de depender de un servicio de terceros para la lógica de negocio y tener control total sobre las reglas de autenticación, permisos y procesamiento de datos a medida que el proyecto escale.
+Autenticación y autorización.
+Reglas de negocio.
+Procesamiento de datos.
+Validaciones.
+Integraciones externas.
+Escalabilidad de la aplicación.
+Próximas mejoras
 
-Otros puntos pendientes:
+Migrar backend de Supabase a FastAPI + PostgreSQL.
 
-- [ ] Migrar backend de Supabase a FastAPI + PostgreSQL propio
-- [ ] Adquirir dominio propio y verificarlo en Resend para habilitar el envío de correos a cualquier usuario real (actualmente limitado a direcciones de prueba)
-- [ ] Panel de métricas para empresas (vistas de oferta, tasa de postulación)
-- [ ] Notificaciones en tiempo real para nuevas postulaciones
+Adquirir y configurar un dominio propio.
 
-## Instalación y configuración local
+Verificar el dominio en Resend para habilitar el envío de correos a usuarios reales.
 
-```bash
-# Clonar el repositorio
+Incorporar métricas para empresas.
+
+Mostrar estadísticas de visualizaciones y postulaciones.
+
+Incorporar notificaciones en tiempo real para nuevas postulaciones.
+
+Instalación y configuración local
+Requisitos
+Node.js.
+npm.
+Una cuenta/proyecto de Supabase.
+Credenciales de Resend si se desea probar el envío de correos.
+Clonar el repositorio
 git clone https://github.com/nelsonvis3/formosa-empleos.git
 cd formosa-empleos
-
-# Instalar dependencias (si aplica según el gestor del proyecto)
+Instalar dependencias
 npm install
+Configurar variables de entorno
 
-# Configurar variables de entorno
+Copiar el archivo de ejemplo:
+
 cp .env.example .env
-# Completar .env con las credenciales de tu proyecto de Supabase
 
-# Levantar en modo desarrollo
+Completar las variables correspondientes con las credenciales del proyecto de Supabase y la configuración de correo.
+
+Ejecutar en desarrollo
 npm run dev
-```
 
-## Variables de entorno
+La aplicación estará disponible normalmente en:
 
-| Variable | Descripción |
-|---|---|
-| `SUPABASE_URL` | URL del proyecto de Supabase |
-| `SUPABASE_ANON_KEY` | Clave pública (anon) de Supabase |
-| `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS` | Credenciales de envío de correo vía Resend |
-| `SITE_URL` | URL base del sitio, usada en los links de confirmación de email |
+http://localhost:3000
+Variables de entorno
+Variable	Descripción
+SUPABASE_URL	URL del proyecto de Supabase.
+SUPABASE_ANON_KEY	Clave pública del proyecto de Supabase.
+SMTP_HOST	Servidor SMTP utilizado para el envío de correos.
+SMTP_USER	Usuario del servicio SMTP.
+SMTP_PASS	Credencial del servicio SMTP.
+SITE_URL	URL base de la aplicación utilizada en enlaces y confirmaciones de correo.
 
-## Estructura del proyecto
+Importante: nunca subir credenciales reales, claves privadas o archivos .env al repositorio.
 
-```
+Estructura del proyecto
 formosa-empleos/
-├── index.html          # Listado público de ofertas
-├── empresa/             # Flujo de registro y panel de empresa
-├── postulante/           # Flujo de registro y panel de postulante
-├── admin/               # Panel de aprobación de empresas
-├── assets/               # Estilos, íconos y recursos estáticos
-└── lib/                  # Cliente de Supabase y utilidades compartidas
-```
+├── index.html              # Listado público de ofertas
+├── empresa/                # Registro y panel de empresas
+├── postulante/             # Registro y panel de postulantes
+├── admin/                  # Panel administrativo
+├── assets/                 # Estilos, iconos y recursos estáticos
+└── lib/                    # Cliente de Supabase y utilidades compartidas
+Roles de usuario
+Postulante
 
-## Roles de usuario
+Puede:
 
-- **Postulante**: explora ofertas, se postula de forma directa o vía formulario, hace seguimiento de sus postulaciones.
-- **Empresa**: publica ofertas (una vez aprobada), define formularios de postulación personalizados, gestiona el estado de sus postulantes, completa su perfil institucional.
-- **Administrador**: aprueba o rechaza el alta de nuevas empresas antes de que puedan operar en la plataforma.
+Explorar ofertas laborales.
+Buscar y filtrar oportunidades.
+Postularse a ofertas.
+Completar formularios personalizados.
+Consultar el estado de sus postulaciones.
+Empresa
 
-## Capturas
+Puede:
 
-*(Agregar screenshots del listado, el detalle de oferta y el panel de empresa.)*
+Crear una cuenta empresarial.
+Completar su perfil institucional.
+Publicar ofertas una vez aprobada su cuenta.
+Crear formularios de postulación personalizados.
+Consultar postulantes.
+Gestionar el estado de los candidatos.
+Administrador
 
-## Licencia
+Puede:
 
-Proyecto de desarrollo personal / portfolio. Todos los derechos reservados.
+Revisar nuevas cuentas empresariales.
+Aprobar o rechazar empresas.
+Controlar qué empresas pueden operar dentro de la plataforma.
+Flujo principal
+Postulante
+Explorar ofertas
+       ↓
+Seleccionar una oportunidad
+       ↓
+Consultar detalles
+       ↓
+Postularse
+       ↓
+Completar formulario
+       ↓
+Seguimiento de postulación
+Empresa
+Crear cuenta
+      ↓
+Aprobación administrativa
+      ↓
+Completar perfil
+      ↓
+Publicar oferta
+      ↓
+Recibir postulaciones
+      ↓
+Gestionar candidatos
 
----
+Este flujo busca mantener separadas las responsabilidades de cada tipo de usuario y evitar que una empresa pueda publicar ofertas antes de completar el proceso de validación.
 
-Desarrollado por **Nelson Sivisstum** — [GitHub](https://github.com/nelsonvis3) · [LinkedIn](https://www.linkedin.com/in/nelson-sivisstum-4777a32b4/)
+Capturas
+
+Las capturas se incorporarán progresivamente a medida que se actualice la presentación visual del proyecto.
+
+Demo
+
+🌐 Ver Formosa Empleos en producción →
+
+Licencia
+
+Proyecto de desarrollo personal y portfolio.
+
+Todos los derechos reservados.
+
+Desarrollado por Nelson Sivisstum
+
+GitHub · LinkedIn
